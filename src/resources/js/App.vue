@@ -1,7 +1,11 @@
 <template>
-<p>Hello from Vuejs</p>
+  <Layout></Layout>
 </template>
 
 <script>
-export default {}
+import Layout from "./components/Layout.vue";
+
+export default {
+  components: { Layout }
+}
 </script>

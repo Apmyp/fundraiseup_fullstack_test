@@ -1,3 +1,47 @@
 body {
   color: blue;
 }
+
+.button {
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  border: none;
+  background: transparent;
+  transition: 0.2s background-color;
+}
+
+.button--default {
+  background-image: linear-gradient(to top, #f7f7f7 0%, #fff 100%);
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  transition: 0.2s background-image;
+}
+
+.button--default:hover,
+.button--default:focus,
+.button--default:active {
+  background-image: linear-gradient(to top, #f7f7f7 0%, #f7f7f7 100%);
+}
+
+.button--primary {
+  background-color: #5391eb;
+  border-radius: 5px;
+  color: #fafafa;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 12px 0;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.button--primary:hover,
+.button--primary:focus,
+.button--primary:active {
+  background-color: #4781d6;
+}
