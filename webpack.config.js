@@ -17,6 +17,11 @@ module.exports = {
   },
   module: {
     rules: [
+      { 
+        exclude: [path.resolve(__dirname, "node_modules")], 
+        loader: "babel-loader", 
+        test: /\.js?$/ 
+      },
       {
         test: /\.vue$/,
         loader: "vue-loader",

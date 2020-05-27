@@ -10,6 +10,11 @@ function getManifest(assetsPath) {
     : devManifest;
 }
 
+function validateDonation(amount) {
+  return amount > 0;
+}
+
 module.exports = {
-  getManifest
+  getManifest,
+  validateDonation,
 };

@@ -9,7 +9,8 @@
     "server:build": "rimraf dist/server && ncc build src/server.js -o dist/server",
     "front:watch": "webpack --watch",
     "front:build": "webpack --mode=production",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "rimraf dist && npm run server:build && NODE_ENV=production npm run front:build",
     "build:start": "ASSETS_PATH=dist/assets node dist/server/index.js"
   },
@@ -37,6 +38,10 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.0",
+    "@babel/preset-env": "^7.10.0",
+    "babel-jest": "^26.0.1",
+    "jest": "^26.0.1",
     "nodemon": "^2.0.4"
   }
 }
