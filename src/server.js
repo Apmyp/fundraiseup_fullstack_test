@@ -25,6 +25,10 @@ router.get("/", async (ctx) => {
 });
 
 router.post('/donate', async (ctx) => {
+  // donate amount > 0
+  // donate currency in currencies
+  // create document in mongodb donations
+
   ctx.body = { ok: true };
 });
 

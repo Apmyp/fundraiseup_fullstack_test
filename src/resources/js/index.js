@@ -1,2 +1,9 @@
+import Vue from "vue";
+import App from "./App.vue";
 import "../css/index.css";
-console.log('test');
+
+new Vue({
+  el: "#app",
+  components: { App },
+  template: "<App />",
+});

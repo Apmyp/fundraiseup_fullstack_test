@@ -8,9 +8,10 @@
     "server:start": "nodemon src/server.js",
     "server:build": "rimraf dist/server && ncc build src/server.js -o dist/server",
     "front:watch": "webpack --watch",
-    "front:build": "webpack",
+    "front:build": "webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf dist && npm run server:build && NODE_ENV=production npm run front:build"
+    "build": "rimraf dist && npm run server:build && NODE_ENV=production npm run front:build",
+    "build:start": "ASSETS_PATH=dist/assets node dist/server/index.js"
   },
   "author": "Arthur Bordenyuk <arthur.bordenyuk@gmail.com>",
   "license": "ISC",
@@ -27,6 +28,9 @@
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
     "rimraf": "^3.0.2",
+    "vue": "^2.6.11",
+    "vue-loader": "^15.9.2",
+    "vue-template-compiler": "^2.6.11",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
