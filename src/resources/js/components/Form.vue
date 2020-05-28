@@ -27,7 +27,7 @@
           @input="handleInput"
           :value="formattedSuggestion"
         />
-        <select class="form__select" v-model="currencyCode">
+        <select class="form__select" :value="currencyCode" @input="handleCurrencyInput">
           <option
             v-for="currency in currencies"
             :key="currency.code"
@@ -54,6 +54,7 @@ import {
   beautifyAmount,
   currenize,
   exchangeCurrency,
+  exchangeCurrencyFromUSD,
   ignoreNotNumbers,
 } from "../utils";
 
@@ -68,45 +69,72 @@ export default {
   },
   data() {
     return {
-      currencyCode: "EUR",
+      presetIndex: null,
+      currencyCode: "USD",
+      prevCurrencyCode: "USD",
       suggestion: null,
     };
   },
   computed: {
+    prevCurrency() {
+      return this.currencies.find((c) => c.code === this.prevCurrencyCode);
+    },
     currency() {
       return this.currencies.find((c) => c.code === this.currencyCode);
     },
     formattedSuggestion() {
       return this.suggestion && this.formatAmount(this.suggestion);
-    },
+    }
   },
   methods: {
     formatAmount,
     cleanAmount,
     beautifyAmount,
     ignoreNotNumbers,
+    exchangeCurrencyFromUSD,
     formatPreset(preset) {
-      return this.currenize(this.beautifyAmount(this.exchangeCurrency(preset)));
+      return this.currenize(this.formatAmount(this.beautifyAndExchangePreset(preset)));
     },
     currenize(amount) {
       return currenize(this.currency, amount);
     },
     exchangeCurrency(amount) {
-      return exchangeCurrency(this.currency, amount);
+      return exchangeCurrency(this.prevCurrency, this.currency, amount);
+    },
+    beautifyAndExchangePreset(preset) {
+      return this.beautifyAmount(this.exchangeCurrencyFromUSD(this.currency, preset));
     },
 
     presetClasses(preset) {
+      const beautifiedPreset = this.beautifyAndExchangePreset(preset);
+
       return {
-        "button--primary": this.suggestion === preset,
-        "button--default": this.suggestion !== preset,
+        "button--primary": this.suggestion === beautifiedPreset,
+        "button--default": this.suggestion !== beautifiedPreset,
       };
     },
+    setPresetIndexIfAvailable(amount) {
+      const presetIndex = this.presets.findIndex(p => p === amount);
+      this.presetIndex = presetIndex >= 0 ? presetIndex : null;
+    },
     handlePresetClick(preset) {
-      this.suggestion = preset;
+      this.suggestion = this.beautifyAndExchangePreset(preset);
+      this.setPresetIndexIfAvailable(preset);
     },
     handleInput(event) {
-      this.suggestion = cleanAmount(event.target.value);
+      this.suggestion = this.cleanAmount(event.target.value);
+      this.setPresetIndexIfAvailable(this.suggestion);
     },
+    handleCurrencyInput(event) {
+      this.prevCurrencyCode = this.currencyCode;
+      this.currencyCode = event.target.value;
+      
+      if(Boolean(this.presetIndex)) {
+        this.suggestion = this.beautifyAndExchangePreset(this.presets[this.presetIndex]);
+      } else {
+        this.suggestion = Math.ceil(this.exchangeCurrency(this.suggestion));
+      }
+    }
   },
 };
 </script>

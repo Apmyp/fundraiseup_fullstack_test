@@ -4,7 +4,7 @@ export function formatAmount(amount) {
 
 export function cleanAmount(amount) {
   const cleanedAmount = amount.replace(/[^\d]/g, "");
-  
+
   return cleanedAmount && Number(cleanedAmount);
 }
 
@@ -27,11 +27,23 @@ export function beautifyAmount(amount) {
 }
 
 export function currenize(currency, amount) {
-  return currency.symbol + formatAmount(amount);
+  return currency.symbol + amount;
 }
 
-export function exchangeCurrency(currency, amount) {
-  return currency.rate * amount;
+export function exchangeCurrency(fromCurrency, toCurrency, amount) {
+  const usd = exchangeCurrencyToUSD(fromCurrency, amount);
+  if(toCurrency.code === "USD") {
+    return usd;
+  }
+  return exchangeCurrencyFromUSD(toCurrency, usd);
+}
+
+export function exchangeCurrencyFromUSD(currency, amount) {
+  return amount * currency.rate;
+}
+
+export function exchangeCurrencyToUSD(currency, amount) {
+    return amount / currency.rate;
 }
 
 export function ignoreNotNumbers(event) {

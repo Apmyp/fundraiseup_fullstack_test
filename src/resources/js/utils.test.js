@@ -9,6 +9,7 @@ import {
 
 const usdCurrency = { "name": "US Dollar", "code": "USD", "symbol": "$", "rate": 1 };
 const eurCurrency =  { "name": "Euro", "code": "EUR", "symbol": "€", "rate": 2 };
+const gbpCurrency = { "name": "British Pound", "code": "GBP", "symbol": "£", "rate": 3 };
 
 describe("formatAmount", () => {
   it("delimits with comma long numbers", () => {
@@ -52,7 +53,8 @@ describe("currenize", () => {
 
 describe("exchangeCurrency", () => {
   it("exchanges amount to passed currency", () => {
-    expect(exchangeCurrency(usdCurrency, 150)).toBe(150);
-    expect(exchangeCurrency(eurCurrency, 150)).toBe(300);
+    expect(exchangeCurrency(usdCurrency, eurCurrency, 150)).toBe(300);
+    expect(exchangeCurrency(eurCurrency, usdCurrency, 300)).toBe(150);
+    expect(exchangeCurrency(eurCurrency, gbpCurrency, 300)).toBe(450);
   });
 });
