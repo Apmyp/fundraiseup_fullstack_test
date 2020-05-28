@@ -11,14 +11,15 @@ body {
   background: transparent;
   transition: 0.2s background-color;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  padding: 10px 0;
+  font-size: 16px;
+  line-height: 18px;
 }
 
 .button--default {
   background-image: linear-gradient(to top, #f7f7f7 0%, #fff 100%);
   border: 1px solid #e0e0e0;
   border-radius: 5px;
-  font-size: 16px;
-  padding: 10px 0;
   transition: 0.2s background-image;
 }
 
@@ -32,11 +33,14 @@ body {
   background-color: #5391eb;
   border-radius: 5px;
   color: #fafafa;
-  font-size: 18px;
-  line-height: 24px;
-  padding: 12px 0;
   text-align: center;
   font-weight: bold;
+}
+
+.button--large {
+  padding: 12px 0;
+  font-size: 18px;
+  line-height: 24px;
   letter-spacing: 0.5px;
 }
 

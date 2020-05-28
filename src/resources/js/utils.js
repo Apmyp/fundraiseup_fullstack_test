@@ -1,5 +1,3 @@
-export function formatAmount(currencySymbol, amount) {
-  const formattedAmount = new Intl.NumberFormat('en-US').format(amount);
-
-  return `${currencySymbol}${formattedAmount}`;
+export function formatAmount(amount) {
+  return new Intl.NumberFormat('en-US').format(amount);
 }

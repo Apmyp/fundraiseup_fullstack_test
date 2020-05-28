@@ -3,9 +3,12 @@
     <form class="form">
       <div class="form__preset-buttons">
         <button 
-        class="form__preset-button button button--default"
+        type="button"
+        class="form__preset-button button"
+        :class="presetClasses(preset)"
         v-for="preset in presets"
         :key="preset"
+        @click="handlePresetClick(preset)"
         >{{ formatAmount(preset) }}</button>
       </div>
       <div class="form__input-wrapper">
@@ -16,10 +19,12 @@
         <input 
           id="form__input" 
           class="form__input" 
-          type="tel"
+          type="text"
           inputmode="numeric"
-          pattern="[0-9]+"
           placeholder="Other"
+          @keypress="ignoreNotNumbers"
+          @input="handleInput"
+          :value="formattedSuggestion"
           >
         <select class="form__select">
           <option
@@ -29,7 +34,7 @@
         </select>
       </div>
 
-      <button class="form__submit-button button button--primary">Donate</button>
+      <button type="button" class="form__submit-button button button--large button--primary">Donate</button>
     </form>
   </div>
 </template>
@@ -48,18 +53,44 @@ export default {
   },
   data() {
     return {
-      currencyCode: "USD"
+      currencyCode: "USD",
+      suggestion: null
     };
   },
   computed: {
     currency() {
       return this.currencies.find(c => c.code === this.currencyCode);
+    },
+    formattedSuggestion() {
+      return this.suggestion && formatAmount(this.suggestion);
     }
   },
   methods: {
     formatAmount(amount) {
-      return formatAmount(this.currency.symbol, amount);
-    }
+      return this.currency.symbol + formatAmount(amount);
+    },
+    presetClasses(preset) {
+      return {
+        'button--primary': this.suggestion === preset,
+        'button--default': this.suggestion !== preset,
+      };
+    },
+    handlePresetClick(preset) {
+      this.suggestion = preset;
+    },
+    handleInput(e) {
+      const inputValue = e.target.value.replace(/[^\d]/g, "");
+      this.suggestion = inputValue && Number(inputValue);
+    },
+    ignoreNotNumbers(e) {
+      const numberCharCodes = e.keyCode >= 48 && e.keyCode <= 57;
+
+      if (numberCharCodes) {
+        return true;
+      }
+
+      e.preventDefault();
+    },
   }
 }
 </script>
@@ -89,6 +120,11 @@ export default {
   .form__preset-buttons .form__preset-button {
     width: calc(33% - 4px);
     margin-bottom: 8px;
+  }
+
+  .form__preset-button:hover, 
+  .form__preset-button:focus {
+    outline: none;
   }
 
   .form__input-wrapper {
