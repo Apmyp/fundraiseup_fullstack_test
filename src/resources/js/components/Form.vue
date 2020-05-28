@@ -6,13 +6,13 @@
         class="form__preset-button button button--default"
         v-for="preset in presets"
         :key="preset"
-        >{{ preset }}</button>
+        >{{ formatAmount(preset) }}</button>
       </div>
       <div class="form__input-wrapper">
         <label 
         class="form__currency-label"
         for="form__input"
-        >$</label>
+        >{{ currency.symbol }}</label>
         <input 
           id="form__input" 
           class="form__input" 
@@ -35,19 +35,31 @@
 </template>
 
 <script>
-import settings from "../../../common/settings.json";
+import { formatAmount } from "../utils";
 
 export default {
+  props: {
+    presets: {
+      required: true
+    },
+    currencies: {
+      required: true
+    },
+  },
+  data() {
+    return {
+      currencyCode: "USD"
+    };
+  },
   computed: {
-    presets: () => {
-      return settings.presets;
-    },
-    suggestion: () => {
-      return settings.suggestion;
-    },
-    currencies: () => {
-      return settings.currencies;
-    },
+    currency() {
+      return this.currencies.find(c => c.code === this.currencyCode);
+    }
+  },
+  methods: {
+    formatAmount(amount) {
+      return formatAmount(this.currency.symbol, amount);
+    }
   }
 }
 </script>
