@@ -11,7 +11,10 @@ router.get("/", async (ctx) => {
 
 router.post("/donate", async (ctx) => {
   const { amount, currency } = ctx.request.body;
-  await donations.createDonation(amount, currency);
+
+  if (Boolean(amount) && Boolean(currency)) {
+    await donations.createDonation(amount, currency);
+  }
 
   ctx.body = { ok: true };
 });

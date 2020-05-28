@@ -174,7 +174,7 @@ export default {
 
 <style>
 .form {
-  width: 320px;
+  max-width: 320px;
   border-radius: 5px;
   background: #f5f5f5;
   border: 1px solid #d4d4d4;

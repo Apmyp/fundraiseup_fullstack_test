@@ -6,7 +6,7 @@ const bodyParser = require("koa-bodyparser");
 const path = require("path");
 
 const utils = require("./utils");
-const router = require('./routes');
+const router = require("./routes");
 
 utils.initializeMongoose(utils.MONGO_URI);
 
@@ -24,7 +24,7 @@ app.use(bodyParser());
 app.use(router.routes());
 app.use(mount("/assets", serve(utils.ASSETS_PATH)));
 
-const PORT = process.env.NODE_PORT || 3000;;
+const PORT = process.env.NODE_PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`[Koa] Server established on http://localhost:${PORT}`)
+  console.log(`[Koa] Server established on http://localhost:${PORT}`);
 });

@@ -1,8 +1,8 @@
-const settings = require('../common/settings.json');
+const settings = require("../common/settings.json");
 const Donation = require("../models/Donation");
 
 async function createDonation(amount, currency) {
-  if(amount <= 0 || !hasCurrency(currency)) {
+  if (amount <= 0 || !hasCurrency(currency)) {
     return;
   }
 
@@ -13,9 +13,9 @@ async function createDonation(amount, currency) {
 }
 
 function hasCurrency(currency) {
-  return settings.currencies.some(c => c.code === currency)
+  return settings.currencies.some((c) => c.code === currency);
 }
 
 module.exports = {
-  createDonation
-}
+  createDonation,
+};

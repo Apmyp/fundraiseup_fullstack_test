@@ -21,8 +21,16 @@ export default {
     },
   },
   methods: {
-    handleSubmit(data) {
-      console.log(data);
+    handleSubmit: (data) => {
+      fetch("/donate", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) 
+      })
+      .then(response => response.json())
+      .then(() => alert("Thank you for your donation!"));
     }
   }
 }

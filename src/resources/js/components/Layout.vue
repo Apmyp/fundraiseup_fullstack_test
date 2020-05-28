@@ -14,6 +14,7 @@ export default {
 
 <style>
   .centered {
+    width: 320px;
     position: absolute;
     top: 50%;
     left: 50%;
