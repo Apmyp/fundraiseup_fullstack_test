@@ -2,6 +2,7 @@
   <Form
     :presets="presets"
     :currencies="currencies"
+    @submit="handleSubmit"
   ></Form>
 </template>
 
@@ -18,6 +19,11 @@ export default {
     currencies: () => {
       return settings.currencies;
     },
+  },
+  methods: {
+    handleSubmit(data) {
+      console.log(data);
+    }
   }
 }
 </script>

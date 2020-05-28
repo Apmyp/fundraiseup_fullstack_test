@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <form class="form">
+    <form class="form" @submit.prevent="handleSubmit">
       <div class="form__preset-buttons">
         <button
           type="button"
@@ -13,7 +13,10 @@
           {{ formatPreset(preset) }}
         </button>
       </div>
-      <div class="form__input-wrapper">
+      <div 
+        class="form__input-wrapper"
+        :class="inputWrapperClasses()"
+      >
         <label class="form__currency-label" for="form__input">
           {{currency.symbol}}
         </label>
@@ -38,7 +41,7 @@
       </div>
 
       <button
-        type="button"
+        type="submit"
         class="form__submit-button button button--large button--primary"
       >
         Donate
@@ -58,6 +61,12 @@ import {
   ignoreNotNumbers,
 } from "../utils";
 
+const STATUS_ERROR = 'error';
+const STATUS_OK = 'ok';
+const DEFAULT_CURRENCY_CODE = "USD";
+const DEFAULT_PREV_CURRENCY_CODE = "USD";
+const DEFAULT_SUGGESTION = null;
+
 export default {
   props: {
     presets: {
@@ -69,10 +78,11 @@ export default {
   },
   data() {
     return {
+      status: null,
       presetIndex: null,
-      currencyCode: "USD",
-      prevCurrencyCode: "USD",
-      suggestion: null,
+      currencyCode: DEFAULT_CURRENCY_CODE,
+      prevCurrencyCode: DEFAULT_PREV_CURRENCY_CODE,
+      suggestion: DEFAULT_SUGGESTION,
     };
   },
   computed: {
@@ -134,6 +144,29 @@ export default {
       } else {
         this.suggestion = Math.ceil(this.exchangeCurrency(this.suggestion));
       }
+    },
+    inputWrapperClasses() {
+      return {
+        'form__input-wrapper--error': this.status === STATUS_ERROR
+      };
+    },
+    validateForm() {
+      if(Number(this.suggestion) <= 0) {
+        this.status = STATUS_ERROR;
+        return false;
+      }
+
+      this.status = STATUS_OK;
+      return true;
+    },
+    handleSubmit() {
+      if(this.validateForm()) {
+        this.$emit('submit', { amount: this.suggestion, currency: this.currencyCode });
+        
+        this.currencyCode = DEFAULT_CURRENCY_CODE;
+        this.prevCurrencyCode = DEFAULT_PREV_CURRENCY_CODE;
+        this.suggestion = DEFAULT_SUGGESTION;
+      }
     }
   },
 };
@@ -182,6 +215,11 @@ export default {
 .form__input-wrapper:focus-within {
   border-color: transparent;
   box-shadow: 0 0 0 2px #76a2e4;
+}
+
+.form__input-wrapper.form__input-wrapper--error {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #e03135;
 }
 
 .form__currency-label {
