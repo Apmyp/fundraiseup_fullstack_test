@@ -13,12 +13,9 @@
           {{ formatPreset(preset) }}
         </button>
       </div>
-      <div 
-        class="form__input-wrapper"
-        :class="inputWrapperClasses()"
-      >
+      <div class="form__input-wrapper" :class="inputWrapperClasses()">
         <label class="form__currency-label" for="form__input">
-          {{currency.symbol}}
+          {{ currency.symbol }}
         </label>
         <input
           id="form__input"
@@ -30,7 +27,11 @@
           @input="handleInput"
           :value="formattedSuggestion"
         />
-        <select class="form__select" :value="currencyCode" @input="handleCurrencyInput">
+        <select
+          class="form__select"
+          :value="currencyCode"
+          @input="handleCurrencyInput"
+        >
           <option
             v-for="currency in currencies"
             :key="currency.code"
@@ -61,8 +62,8 @@ import {
   ignoreNotNumbers,
 } from "../utils";
 
-const STATUS_ERROR = 'error';
-const STATUS_OK = 'ok';
+const STATUS_ERROR = "error";
+const STATUS_OK = "ok";
 const DEFAULT_CURRENCY_CODE = "USD";
 const DEFAULT_PREV_CURRENCY_CODE = "USD";
 const DEFAULT_SUGGESTION = null;
@@ -94,7 +95,7 @@ export default {
     },
     formattedSuggestion() {
       return this.suggestion && this.formatAmount(this.suggestion);
-    }
+    },
   },
   methods: {
     formatAmount,
@@ -103,7 +104,9 @@ export default {
     ignoreNotNumbers,
     exchangeCurrencyFromUSD,
     formatPreset(preset) {
-      return this.currenize(this.formatAmount(this.beautifyAndExchangePreset(preset)));
+      return this.currenize(
+        this.formatAmount(this.beautifyAndExchangePreset(preset))
+      );
     },
     currenize(amount) {
       return currenize(this.currency, amount);
@@ -112,7 +115,9 @@ export default {
       return exchangeCurrency(this.prevCurrency, this.currency, amount);
     },
     beautifyAndExchangePreset(preset) {
-      return this.beautifyAmount(this.exchangeCurrencyFromUSD(this.currency, preset));
+      return this.beautifyAmount(
+        this.exchangeCurrencyFromUSD(this.currency, preset)
+      );
     },
 
     presetClasses(preset) {
@@ -124,7 +129,7 @@ export default {
       };
     },
     setPresetIndexIfAvailable(amount) {
-      const presetIndex = this.presets.findIndex(p => p === amount);
+      const presetIndex = this.presets.findIndex((p) => p === amount);
       this.presetIndex = presetIndex >= 0 ? presetIndex : null;
     },
     handlePresetClick(preset) {
@@ -138,20 +143,23 @@ export default {
     handleCurrencyInput(event) {
       this.prevCurrencyCode = this.currencyCode;
       this.currencyCode = event.target.value;
-      
-      if(Boolean(this.presetIndex)) {
-        this.suggestion = this.beautifyAndExchangePreset(this.presets[this.presetIndex]);
+
+      if (Boolean(this.presetIndex)) {
+        this.suggestion = this.beautifyAndExchangePreset(
+          this.presets[this.presetIndex]
+        );
       } else {
-        this.suggestion = Math.ceil(this.exchangeCurrency(this.suggestion));
+        this.suggestion =
+          this.suggestion && Math.ceil(this.exchangeCurrency(this.suggestion));
       }
     },
     inputWrapperClasses() {
       return {
-        'form__input-wrapper--error': this.status === STATUS_ERROR
+        "form__input-wrapper--error": this.status === STATUS_ERROR,
       };
     },
     validateForm() {
-      if(Number(this.suggestion) <= 0) {
+      if (Number(this.suggestion) <= 0) {
         this.status = STATUS_ERROR;
         return false;
       }
@@ -160,14 +168,19 @@ export default {
       return true;
     },
     handleSubmit() {
-      if(this.validateForm()) {
-        this.$emit('submit', { amount: this.suggestion, currency: this.currencyCode });
-        
+      if (this.validateForm()) {
+        this.$emit("submit", {
+          amount: this.suggestion,
+          currency: this.currencyCode,
+        });
+
+        this.status = null;
+        this.presetIndex = null;
         this.currencyCode = DEFAULT_CURRENCY_CODE;
         this.prevCurrencyCode = DEFAULT_PREV_CURRENCY_CODE;
         this.suggestion = DEFAULT_SUGGESTION;
       }
-    }
+    },
   },
 };
 </script>

@@ -4,7 +4,6 @@ import {
   beautifyAmount,
   currenize,
   exchangeCurrency,
-  ignoreNotNumbers,
 } from "./utils";
 
 const usdCurrency = { "name": "US Dollar", "code": "USD", "symbol": "$", "rate": 1 };

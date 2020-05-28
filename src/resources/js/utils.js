@@ -47,9 +47,10 @@ export function exchangeCurrencyToUSD(currency, amount) {
 }
 
 export function ignoreNotNumbers(event) {
+  const enterCharCodes = [13, 36, 76].includes(event.keyCode);
   const numberCharCodes = event.keyCode >= 48 && event.keyCode <= 57;
 
-  if (numberCharCodes) {
+  if (enterCharCodes || numberCharCodes) {
     return true;
   }
 
