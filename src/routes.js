@@ -13,10 +13,14 @@ router.post("/donate", async (ctx) => {
   const { amount, currency } = ctx.request.body;
 
   if (Boolean(amount) && Boolean(currency)) {
-    await donations.createDonation(amount, currency);
+    if (await donations.createDonation(amount, currency)) {
+      ctx.body = { ok: true };
+    }
+
+    return;
   }
 
-  ctx.body = { ok: true };
+  ctx.body = { ok: false };
 });
 
 module.exports = router;

@@ -3,7 +3,7 @@ const Donation = require("../models/Donation");
 
 async function createDonation(amount, currency) {
   if (amount <= 0 || !hasCurrency(currency)) {
-    return;
+    return false;
   }
 
   const d = new Donation({ amount, currency });
